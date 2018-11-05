@@ -1,1 +1,4 @@
+#Jekyll configuration
+url: "https://icip-lab.github.io/VHTR/"
+markdown: kramdown
 theme: jekyll-theme-cayman
