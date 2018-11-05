@@ -1,4 +1,4 @@
-# ICIP-lab VHTR project
+# VHTR project
 ## Overview
 This project focuses on Vietnamese Handwritten Text Recognition using Online Handwritten Text databases.
 It is a collaboration between **[ICIP-Lab](http://www.math.hcmus.edu.vn/icip-lab/index.php)** of HCMUS and **[Nakagawa-Lab](http://web.tuat.ac.jp/~nakagawa/en/index.html)** of TUAT under supervision of Prof. Masaki Nakagawa and Prof. Pham The Bao.
