@@ -6,7 +6,7 @@ It is a collaboration between **[ICIP-Lab](http://www.math.hcmus.edu.vn/icip-lab
 Project site: [https://icip-lab.github.io/VHTR/](https://icip-lab.github.io/VHTR/)
 
 ## Contributors
-- Phạm Nguyễn Ngọc Ẩn, B3 student (ICIP-Lab)
+- Nguyễn Phạm Ngọc Ẩn, B3 student (ICIP-Lab)
 - Hồ Yến Nhi, B3 student (ICIP-Lab)
 - Hung Tuan Nguyen, Ph.D. student (Nakagawa-Lab). [@ntuanhung](https://github.com/ntuanhung) 
 
