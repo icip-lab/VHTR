@@ -161,13 +161,11 @@ void DrawPixels(HWND hwnd) {
 		float x = x_coordinates[i]/40;//% r.right;//x_coordinates[i];
 		float y = y_coordinates[i]/40;//% r.bottom;
 		SetPixel(hdc, x, y, RGB(0, 0, 255));
-		if(image_)
 		hdc = image_->GetDC();
 	}
 	
 	string impath = "D:\RVH\Win32Project1\Win32Project1";
 	EndPaint(hwnd, &ps);
-	
 	image_->Save((LPCTSTR)impath.c_str(), Gdiplus::ImageFormatPNG);
 	image_->ReleaseDC();
 	delete image_;
