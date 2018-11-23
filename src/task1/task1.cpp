@@ -4,7 +4,11 @@ using namespace std;
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 void DrawPixels(HWND hwnd);
 
+<<<<<<< HEAD
 int Exp(int size)
+=======
+int Ten(int size)
+>>>>>>> e2a5961ce544d423ac47952cf825804bed86598e
 {
 	int result = 1;
 	if (size == 0)
@@ -13,6 +17,7 @@ int Exp(int size)
 		result = result * 10;
 	return result;
 }
+<<<<<<< HEAD
 vector<string> readNameFile(string filename) {
 	vector<string>fileOut;
 	fstream fileIn(filename);
@@ -27,6 +32,9 @@ vector<string> readNameFile(string filename) {
 	}
 	return fileOut;
 }
+=======
+
+>>>>>>> e2a5961ce544d423ac47952cf825804bed86598e
 vector<vector<int>> readfile(const char *filename)
 {
 	vector<vector<int>> result;
@@ -60,7 +68,11 @@ vector<vector<int>> readfile(const char *filename)
 					for (int j = i + 1; j<temp.size(); j++) {
 						string a;
 						a.push_back(temp[j]);
+<<<<<<< HEAD
 						Makenumber = Makenumber + atoi(a.c_str())*Exp(temp.size() - j - 1);
+=======
+						Makenumber = Makenumber + atoi(a.c_str())*Ten(temp.size() - j - 1);
+>>>>>>> e2a5961ce544d423ac47952cf825804bed86598e
 					}
 					x_coordinates.push_back(Makenumber);
 					fp >> Temp;
@@ -101,6 +113,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg,
 
 	return DefWindowProcW(hwnd, msg, wParam, lParam);
 }
+<<<<<<< HEAD
 void SetWindowSize(size_t width, size_t height)
 {
 	HANDLE output_handle = ::GetStdHandle(STD_OUTPUT_HANDLE);
@@ -169,6 +182,42 @@ void DrawPixels(HWND hwnd) {
 }
 
 
+=======
+
+void DrawPixels(HWND hwnd) {
+	string filename = ".\\example\\test1.txt";
+	const wchar_t * impath = L".\\example\\test1.png";
+
+	// Draw strokes to screen
+	PAINTSTRUCT ps;
+	
+	HDC hdc = BeginPaint(hwnd, &ps);
+	vector<vector<int>> results = readfile(filename.c_str());
+	cout << "Loading something..." << endl;
+
+	vector<int>x_coordinates = (vector<int>)results.front();
+	vector<int>y_coordinates = (vector<int>)results.back();
+	for (int i = 0; i<x_coordinates.size() / 2; i++) {
+
+		float x = x_coordinates[i] / 40;//% r.right;//x_coordinates[i];
+		float y = y_coordinates[i] / 40;//% r.bottom;
+		SetPixel(hdc, x, y, RGB(0, 0, 255));
+	}
+	EndPaint(hwnd, &ps);
+
+	// Print screen to file
+	RECT rect_1 = { 0 };
+	GetWindowRect(hwnd, &rect_1);
+	ATL::CImage* image_ = new CImage();
+	image_->Create(rect_1.right - rect_1.left, rect_1.bottom - rect_1.top, 32);
+	HDC device_context_handle = image_->GetDC();
+	PrintWindow(hwnd, device_context_handle, PW_CLIENTONLY);
+	image_->Save(impath, Gdiplus::ImageFormatPNG);
+	image_->ReleaseDC();
+	delete image_;
+}
+
+>>>>>>> e2a5961ce544d423ac47952cf825804bed86598e
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	PWSTR lpCmdLine, int nCmdShow) {
 
@@ -196,7 +245,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	RegisterClassW(&wc);
 	CreateWindowW(wc.lpszClassName, L"Pixels",
 		WS_OVERLAPPEDWINDOW | WS_VISIBLE,
+<<<<<<< HEAD
 		100, 100, 1300, 750, NULL, NULL, hInstance, NULL);
+=======
+		100, 100, 300, 250, NULL, NULL, hInstance, NULL);
+>>>>>>> e2a5961ce544d423ac47952cf825804bed86598e
 
 	while (GetMessage(&msg, NULL, 0, 0)) {
 
