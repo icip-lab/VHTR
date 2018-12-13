@@ -21,14 +21,14 @@ void DrawPixels(HWND hwnd) {
 	vector<int>x_coordinates = (vector<int>)results.front();
 	vector<int>y_coordinates = (vector<int>)results.back();
 	for (int i = 0; i < x_coordinates.size(); i++) {
-		float x = x_coordinates[i] / 40; // (int / int) is not float
-		float y = y_coordinates[i] / 40;
+		double x =(double) x_coordinates[i] / 40; // (int / int) is not float
+		double y =(double) y_coordinates[i] / 40;
 		SetPixel(hdc, x, y, RGB(0, 0, 255));
 	}
 	for (int i = 0; i < newline.size(); i++) {
 
-		float x = newline[i].front() / 40;
-		float y = newline[i].back() / 40;
+		double x =(double) newline[i].front() / 40;
+		double y =(double) newline[i].back() / 40;
 		SetPixel(hdc, x, y, RGB(255, 0, 0));
 	}
 	EndPaint(hwnd, &ps);
