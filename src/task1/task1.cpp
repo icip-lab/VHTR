@@ -27,11 +27,7 @@ vector<string> readNameFile(string filename) {
 	}
 	return fileOut;
 }
-<<<<<<< HEAD:src/task1/task1.cpp
-=======
 
-
->>>>>>> parent of 4c424f1... Merge branch 'task-2' of https://github.com/icip-lab/VHTR into task-2:src/task2/task1.cpp
 vector<vector<int>> readfile(const char *filename)
 {
 	vector<vector<int>> result;

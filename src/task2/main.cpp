@@ -21,7 +21,7 @@ void DrawPixels(HWND hwnd) {
 	vector<int>x_coordinates = (vector<int>)results.front();
 	vector<int>y_coordinates = (vector<int>)results.back();
 	for (int i = 0; i < x_coordinates.size(); i++) {
-		float x = x_coordinates[i] / 40;
+		float x = x_coordinates[i] / 40; // (int / int) is not float
 		float y = y_coordinates[i] / 40;
 		SetPixel(hdc, x, y, RGB(0, 0, 255));
 	}
@@ -70,7 +70,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR lpCmdLin
 	//Then reopen the stdout for "cout" operator
 	BOOL allocConsole_flag = AllocConsole();
 	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
-	if (allocConsole_flag == true) {
+	if (allocConsole_flag == TRUE) {
 		cout << "Successfully allocated new console" << endl;
 	}
 	else {
