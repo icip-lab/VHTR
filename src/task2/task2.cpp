@@ -1,11 +1,6 @@
 #include "task2.h"
 using namespace std;
 
-//LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
-//void DrawPixels(HWND hwnd);
-
-//read file and read offstroke
-
 // vector<int> point1 : a pair of coordernate x,y of point1
 double D(vector<int>point1, vector<double>point2) { // computing the distance between two points
 	double x = (point1.front() - point2.front())*(point1.front() - point2.front());
@@ -13,19 +8,19 @@ double D(vector<int>point1, vector<double>point2) { // computing the distance be
 	return sqrt((double)(x + y));
 }
 
-
 double D(vector<int>point1, vector<int>point2) { // computing the distance between two points
 	double x = (point1.front() - point2.front())*(point1.front() - point2.front());
 	double y = (point1.back() - point2.back())*(point1.back() - point2.back());
 	return sqrt((double)(x + y));
 }
+
 double D(vector<double>point1, vector<double>point2) {
 	double x = (point1.front() - point2.front())*(point1.front() - point2.front());
 	double y = (point1.back() - point2.back())*(point1.back() - point2.back());
 	return sqrt((double)(x + y));
 }
-// point1 & point2 are two pairs of coordernate of an offstroke( first coor & last coor)
 
+// point1 & point2 are two pairs of coordernate of an offstroke( first coor & last coor)
 int findMinDistance(vector<int> point1,vector<int>point2,vector<vector<double>> Centroids)
 {
 	vector<double>temp;
@@ -65,6 +60,7 @@ int findMinDistance(vector<int> point1,vector<int>point2,vector<vector<double>> 
 	}
 	return pos;
 }
+
 double Direction(vector<int> point1, vector<int>point2) // calculate the direction of an offstroke ( using corner)
 {
 	double tan; // calculate the conrner of an offstroke
@@ -85,6 +81,7 @@ double Direction(vector<int> point1, vector<int>point2) // calculate the directi
 	}
 	return tan;
 }
+
 // vector<vector<int>> offstroke : each two monoculer is one offstroke
 void FeatureExtract(vector<vector<int>> offstroke, vector<vector<int>> &feature1, vector<vector<int>> &feature2, vector<double> &feature3, vector<double> &feature4)
 {
@@ -108,6 +105,7 @@ void FeatureExtract(vector<vector<int>> offstroke, vector<vector<int>> &feature1
 	}
 
 }
+
 // calculate average of centroid
 vector<double> Average(vector<vector<int>> Store)
 {
