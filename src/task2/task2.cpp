@@ -2,13 +2,15 @@
 using namespace std;
 
 // vector<int> point1 : a pair of coordernate x,y of point1
-double D(vector<int>point1, vector<double>point2) { // computing the distance between two points
+
+//phia duoi em goi ham D (tinh khoang cach giua 2 diem ) theo nhieu kieu du lieu nen em tao toi 3 ham D 
+double D(vector<int>point1, vector<double>point2) { // computute the distance between two points
 	double x = (point1.front() - point2.front())*(point1.front() - point2.front());
 	double y = (point1.back() - point2.back())*(point1.back() - point2.back());
 	return sqrt((double)(x + y));
 }
 
-double D(vector<int>point1, vector<int>point2) { // computing the distance between two points
+double D(vector<int>point1, vector<int>point2) { // compute the distance between two points
 	double x = (point1.front() - point2.front())*(point1.front() - point2.front());
 	double y = (point1.back() - point2.back())*(point1.back() - point2.back());
 	return sqrt((double)(x + y));
@@ -21,6 +23,8 @@ double D(vector<double>point1, vector<double>point2) {
 }
 
 // point1 & point2 are two pairs of coordernate of an offstroke( first coor & last coor)
+// ham nay dung de tim noi chua cua cai offstroke dang xet trong 5 bo Centroid ( chua trong vector<vector> Centroids)
+// em da danh so thu tu cho 5 set va ham nay se tra ve vi tri Centroid chua cai offstroke dang xet 
 int findMinDistance(vector<int> point1,vector<int>point2,vector<vector<double>> Centroids)
 {
 	vector<double>temp;
@@ -60,7 +64,7 @@ int findMinDistance(vector<int> point1,vector<int>point2,vector<vector<double>> 
 	}
 	return pos;
 }
-
+// ham Direction la cai feature thu 4 , tim huong cua cai offstroke dang xet
 double Direction(vector<int> point1, vector<int>point2) // calculate the direction of an offstroke ( using corner)
 {
 	double tan; // calculate the conrner of an offstroke
@@ -82,7 +86,11 @@ double Direction(vector<int> point1, vector<int>point2) // calculate the directi
 	return tan;
 }
 
-// vector<vector<int>> offstroke : each two monoculer is one offstroke
+
+//ham FeatureExtract: vector<vector> offstroke chua thong tin toa do cua cac offstroke ,
+// o day em luu vao vector<vector> offstroke theo kieu cu 2 phan tu ke tiep nhau la toa do dau( khi nhac but len) va toa
+//  do cuoi( khi dat but xuong) cua 1 offstroke
+// muc dich cua ham FeatureExtract la dua vao vector<vector>offstroke em se tao ra duoc 4 cai dac trung nhu o phia duoi
 void FeatureExtract(vector<vector<int>> offstroke, vector<vector<int>> &feature1, vector<vector<int>> &feature2, vector<double> &feature3, vector<double> &feature4)
 {
 	vector<int> temp;
@@ -101,12 +109,17 @@ void FeatureExtract(vector<vector<int>> offstroke, vector<vector<int>> &feature1
 		double can = sqrt((double)pow(offstroke[i].front() - offstroke[i + 1].front(), 2) + (double)pow(offstroke[i].back() - offstroke[i + 1].back(), 2));
 		feature3.push_back(can);
 		double corner = Direction(offstroke[i], offstroke[i + 1]);
+		// dac trung thu 4 ( huong )
 		feature4.push_back(corner);
 	}
 
 }
 
 // calculate average of centroid
+// ham nay tinh trung binh cua mot bo du lieu ( 1 cai Centroid)
+// mac du minh chi co 4 dac trung nhung do dac trung 1 va 2 luu tru 1 cap Ox Oy 
+// nen khi tinh trun binh em lai tinh den 6 gia tri, vi em tinh trung binh cua Ox rieng va trung binh cua Oy rieng luon
+// ca 2 dac trung 1 va 2 em deu lam nhu vay
 vector<double> Average(vector<vector<int>> Store)
 {
 	vector<double> result;
@@ -150,12 +163,14 @@ vector<double> Average(vector<vector<int>> Store)
 
 
 }
-
+// thuat toan kmean
 vector<vector<int>> Kmeans(vector<vector<int>> offstroke) {
 	/// what does offstroke consist of?
-
 	// make 5 stores corresponding to 5 Centroids 
 	// what does "5 stores" mean? --> 5 clusters/groups? 
+	// 5 stores phia duoi tuong ung voi 5 bo chua cac offstroke 
+	// cai kmean nay em dung de phan ra 5 loai offstroke do anh( short, long, newline...)
+	// nen 5 cai stores se chua cac offstroke tuong ung
 	vector<vector<vector<int>>> Store;
 	vector<vector<int>> Store0, Store1, Store2, Store3, Store4;
 	vector<vector<int>> feature1;
@@ -165,6 +180,12 @@ vector<vector<int>> Kmeans(vector<vector<int>> offstroke) {
 	// 5 centroids
 
 	/// Please explain how does "FeatureExtract" work?
+	// sau khi goi ham nay minh tim duoc 4 cai dac trung cua tung offstroke
+	//feature1 se luu lan luot toa do x,y cua diem thu 1( luc nhac but len) cua offstroke
+	//feature2 se luu lan luot toa do x,y cua diem thu 2 cua offstroke( khi dat but xuong)
+	// feature3 luu chieu dai cua offstroke
+	// feature4 luu huong cua offstroke ( o day em tinh huong bang cach tinh tan cua goc giua duong thang 
+	//noi 2 diem cua offstroke voi truc hoanh )
 	FeatureExtract(offstroke, feature1, feature2, feature3, feature4);
 
 	vector<double>short_offstroke_centroid;
@@ -175,7 +196,7 @@ vector<vector<int>> Kmeans(vector<vector<int>> offstroke) {
 	vector<vector<double>> Centroids;
 
 	// first we will take 5 value-sets to assign into 5 centroids repetitive
-	// each centroid storing 5 agrument : Ox1 ,Oy1,Ox2,Oy2,distance
+	// each centroid storing 6 agrument : Ox1 ,Oy1,Ox2,Oy2,distance,direction
 	short_offstroke_centroid.push_back(feature1[0].front());//0
 	short_offstroke_centroid.push_back(feature1[0].back());
 	short_offstroke_centroid.push_back(feature2[0].front());
@@ -207,6 +228,7 @@ vector<vector<int>> Kmeans(vector<vector<int>> offstroke) {
 	delayedstroke_centroid.push_back(feature2[4].back());
 	delayedstroke_centroid.push_back(feature3[4]);
 	delayedstroke_centroid.push_back(feature4[4]);
+	// Centroids dung de chua 5 bo o tren
 	Centroids.push_back(short_offstroke_centroid);
 	Centroids.push_back(long_offstroke_centroid);
 	Centroids.push_back(newline_offstroke_centroid);
@@ -273,7 +295,7 @@ vector<vector<int>> Kmeans(vector<vector<int>> offstroke) {
 
 		Count++;
 	}
-	// return store[i] that has centroid[i][4] largest  (centroid[i][4] is length of offstroke)
+	// return store[i] that has largest centroid[i][4]   (centroid[i][4] is length of offstroke)
 	int max = 0;
 
 	for (int i = 1; i < 5; i++)
