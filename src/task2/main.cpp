@@ -17,7 +17,8 @@ void DrawPixels(HWND hwnd) {
 	vector<vector<int>>offstroke;
 	vector<vector<int>> results = readfile(filename.c_str(), offstroke);
 	cout << "Loading something..." << endl;
-	vector<vector<int>>newline = Kmeans(offstroke);
+	int index = 0;
+	vector<int>newline = Kmeans(offstroke,index);
 	vector<int>x_coordinates = (vector<int>)results.front();
 	vector<int>y_coordinates = (vector<int>)results.back();
 	for (int i = 0; i < x_coordinates.size(); i++) {
@@ -26,11 +27,14 @@ void DrawPixels(HWND hwnd) {
 		SetPixel(hdc, x, y, RGB(0, 0, 255));
 	}
 	for (int i = 0; i < newline.size(); i++) {
-
-		double x =(double) newline[i].front() / 40;
-		double y =(double) newline[i].back() / 40;
-		SetPixel(hdc, x, y, RGB(255, 0, 0));
+		if (newline[i] == 0)
+		{
+			double x = (double)offstroke[i].front() / 40;
+			double y = (double)offstroke[i].back() / 40;
+			SetPixel(hdc, x, y, RGB(255, 0, 0));
+		}
 	}
+	newline.clear();
 	EndPaint(hwnd, &ps);
 
 	// Print screen to file
