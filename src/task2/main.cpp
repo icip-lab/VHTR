@@ -14,26 +14,49 @@ void DrawPixels(HWND hwnd) {
 	PAINTSTRUCT ps;
 
 	HDC hdc = BeginPaint(hwnd, &ps);
-	vector<vector<int>>offstroke;
-	vector<vector<int>> results = readfile(filename.c_str(), offstroke);
+	vector<vector<double>>offstroke;
+	vector<vector<double>> results = readfile(filename.c_str(), offstroke);
 	cout << "Loading something..." << endl;
-	int index = 0;
-	vector<int>newline = Kmeans(offstroke,index);
-	vector<int>x_coordinates = (vector<int>)results.front();
-	vector<int>y_coordinates = (vector<int>)results.back();
+	
+	vector<double>x_coordinates = (vector<double>)results.front();
+	vector<double>y_coordinates = (vector<double>)results.back();
+	
 	for (int i = 0; i < x_coordinates.size(); i++) {
 		double x =(double) x_coordinates[i] / 40; // (int / int) is not float
 		double y =(double) y_coordinates[i] / 40;
 		SetPixel(hdc, x, y, RGB(0, 0, 255));
 	}
+	//drawing line
+	int index = 0;
+	vector<int>newline = Kmeans(offstroke, index);
+	HPEN hLinePen, hPenOld;
+	COLORREF qLineColor;
 	for (int i = 0; i < newline.size(); i++) {
 		if (newline[i] == 0)
-		{
-			double x = (double)offstroke[i].front() / 40;
-			double y = (double)offstroke[i].back() / 40;
-			SetPixel(hdc, x, y, RGB(255, 0, 0));
-		}
+			qLineColor=RGB(255, 0, 0);
+		if (newline[i] == 1)
+			qLineColor = RGB(0, 255, 0);
+		if (newline[i] == 2)
+			qLineColor = RGB(0, 0, 0);
+		if (newline[i] == 3)
+			qLineColor = RGB(255, 0, 255);
+		if (newline[i] == 4)
+			qLineColor = RGB(255, 255, 0);
+		hLinePen = CreatePen(PS_SOLID, 1, qLineColor);
+		hPenOld = (HPEN)SelectObject(hdc, hLinePen);
+		double x = (double)offstroke[i].front() / 40;
+		double y = (double)offstroke[i].back() / 40;
+		MoveToEx(hdc, x, y, NULL);
+		i++;
+		x = (double)offstroke[i].front() / 40;
+		y = (double)offstroke[i].back() / 40;
+		LineTo(hdc, x, y);
+		SelectObject(hdc, hPenOld);
+		DeleteObject(hLinePen);
+
 	}
+	
+
 	newline.clear();
 	EndPaint(hwnd, &ps);
 

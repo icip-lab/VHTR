@@ -5,17 +5,6 @@ using namespace std;
 // vector<int> point1 : a pair of coordernate x,y of point1
 
 //phia duoi em goi ham D (tinh khoang cach giua 2 diem ) theo nhieu kieu du lieu nen em tao toi 3 ham D 
-double D(vector<int>point1, vector<double>point2) { // computute the distance between two points
-	double x = (point1.front() - point2.front())*(point1.front() - point2.front());
-	double y = (point1.back() - point2.back())*(point1.back() - point2.back());
-	return sqrt((double)(x + y));
-}
-
-double D(vector<int>point1, vector<int>point2) { // compute the distance between two points
-	double x = (point1.front() - point2.front())*(point1.front() - point2.front());
-	double y = (point1.back() - point2.back())*(point1.back() - point2.back());
-	return sqrt((double)(x + y));
-}
 
 double D(vector<double>point1, vector<double>point2) {
 	double x = (point1.front() - point2.front())*(point1.front() - point2.front());
@@ -44,32 +33,11 @@ double Direction(vector<double> point1, vector<double>point2) // calculate the d
 	}
 	return degree_cos*3.1415 / 180; // chuyen tu do sang radian
 }
-// chung ham nhung khac kieu du lieu ( se sua lai sau =]]])
-double Direction(vector<int> point1, vector<int>point2) // calculate the direction of an offstroke ( using corner)
-{
-	double degree_cos; // calculate the conrner of an offstroke
 
-	if (point1.back() < point2.back())
-	{
-
-		double d = D(point1, point2);
-		double pytago = sqrt((double)d*d - (double)(point2.back()-point1.back())*(point2.back() - point1.back()));
-		degree_cos= acos((double)pytago/ d) ;
-	}
-	else
-	{
-
-		double d = D(point1, point2);
-		double pytago = sqrt((double)d*d - (double)(point1.back()-point2.back())*(point1.back() - point2.back()));
-		degree_cos = acos((double)pytago / d);
-		degree_cos = degree_cos + 90;
-	}
-	return degree_cos*3.1415/180; // chuyen tu do sang radian
-}
 // point1 & point2 are two pairs of coordernate of an offstroke( first coor & last coor)
 // ham nay dung de tim noi chua cua cai offstroke dang xet trong 5 bo Centroid ( chua trong vector<vector> Centroids)
 // em da danh so thu tu cho 5 set va ham nay se tra ve vi tri Centroid chua cai offstroke dang xet 
-int findMinDistance(vector<int> point1,vector<int>point2,vector<vector<double>> Centroids)
+int findMinDistance(vector<double> point1,vector<double>point2,vector<vector<double>> Centroids)
 {
 	vector<double>temp;
 	// gan trung binh cua nhom dau tien
@@ -125,9 +93,9 @@ int findMinDistance(vector<int> point1,vector<int>point2,vector<vector<double>> 
 // o day em luu vao vector<vector> offstroke theo kieu cu 2 phan tu ke tiep nhau la toa do dau( khi nhac but len) va toa
 //  do cuoi( khi dat but xuong) cua 1 offstroke
 // muc dich cua ham FeatureExtract la dua vao vector<vector>offstroke em se tao ra duoc 4 cai dac trung nhu o phia duoi
-void FeatureExtract(vector<vector<int>> offstroke, vector<vector<int>> &feature1, vector<vector<int>> &feature2, vector<double> &feature3, vector<double> &feature4)
+void FeatureExtract(vector<vector<double>> offstroke, vector<vector<double>> &feature1, vector<vector<double>> &feature2, vector<double> &feature3, vector<double> &feature4)
 {
-	vector<int> temp;
+	vector<double> temp;
 
 	for (int i = 0; i < offstroke.size(); i=i+2)
 	{
@@ -155,7 +123,7 @@ void FeatureExtract(vector<vector<int>> offstroke, vector<vector<int>> &feature1
 // nen khi tinh trun binh em lai tinh den 6 gia tri, vi em tinh trung binh cua Ox rieng va trung binh cua Oy rieng luon
 // ca 2 dac trung 1 va 2 em deu lam nhu vay
 
-vector<vector<double>> Average(vector<vector<int>> offstroke, vector<int>flag)
+vector<vector<double>> Average(vector<vector<double>> offstroke, vector<int>flag)
 {
 	vector<vector<double>> result;// luu vector trung binh cua tung nhom 
 	// dem so luong phan tu cua tung nhom
@@ -198,9 +166,24 @@ vector<vector<double>> Average(vector<vector<int>> offstroke, vector<int>flag)
 // thuat toan kmean
 //Input:vector 2 chieu luu toa do cua off stroke,index luu chi cua so nhom offstroke duoc chon la offstroke new line
 //Output:vector flag  danh dau 1,2,3,45 dai dien cho 5 cluste. Dong thoi, cap nhat vi tri cua index
-vector<int> Kmeans(vector<vector<int>> offstroke,int &index) {
-	vector<vector<int>> feature1;
-	vector<vector<int>> feature2;
+bool Check(vector<int> flag_before, vector<int> flag_after)
+{
+	int Count = 0; // dem so phan tu giong nhau giua 2 lan phan nhom
+	if (flag_after.empty() || flag_before.empty())
+		return false;
+	for (int i = 0; i < flag_after.size(); i++)
+	{
+		if (flag_after[i] == flag_before[i])
+			Count++;
+	}
+	double div =(double) Count / flag_after.size();
+	if ( div ==1)
+		return true;
+	return false;
+}
+vector<int> Kmeans(vector<vector<double>> offstroke,int &index) {
+	vector<vector<double>> feature1;
+	vector<vector<double>> feature2;
 	vector<double> feature3,feature4;
 	FeatureExtract(offstroke, feature1, feature2, feature3, feature4);
 	//Centroids: Luu gia tri trung binh cua 5 cluster
@@ -223,15 +206,17 @@ vector<int> Kmeans(vector<vector<int>> offstroke,int &index) {
 	
 	//tao 1 vector flag danh dau 1,2,3,45 dai dien cho 5 cluster
 	vector<int> flag;
+	vector<int>temp_flag;
 	// consider each offstroke to delivery to each centroid
-	int Count = 0;// first loop
-	while (Count <= 15)
+	// first loop
+	int count = 0;
+	while (true)
 	{
 		// assign each offstroke into the store in which corresponding
 		for (int i = 0; i < offstroke.size();i++) {
-			vector<int>point1 = offstroke[i];
+			vector<double>point1 = offstroke[i];
 			i++;
-			vector<int>point2 = offstroke[i];
+			vector<double>point2 = offstroke[i];
 			int pos=0;
 			pos = findMinDistance(point1, point2, Centroids);
 			flag.push_back(pos);
@@ -239,10 +224,16 @@ vector<int> Kmeans(vector<vector<int>> offstroke,int &index) {
 		}
 		// calculate average for each centroid
 		Centroids=Average(offstroke,flag);
-		if(Count<15)
-			flag.clear();
-		Count++;
-	}
+		if (Check(temp_flag, flag)) {
+			cout << count;
+			break;
+		}
+		temp_flag.clear();
+		temp_flag = flag;
+		flag.clear();
+		count++;
+		
+	} 
 	
 	int max = 0;
 

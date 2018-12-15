@@ -25,9 +25,9 @@ vector<string> readNameFile(string filename) {
 	return fileOut;
 }
 
-vector<vector<int>> readfile(const char *filename, vector<vector<int>>&offstroke)
+vector<vector<double>> readfile(const char *filename, vector<vector<double>>&offstroke)
 {
-	vector<vector<int>> result;
+	vector<vector<double>> result;
 	fstream fp(filename);
 	if (fp.fail()) {
 		cout << "can't read file !!!" << endl;
@@ -36,11 +36,11 @@ vector<vector<int>> readfile(const char *filename, vector<vector<int>>&offstroke
 	else {
 		string temp;
 		char comma;
-		int Temp;
-		int x_temp, y_temp;
-		vector<int> x_coordinates;
-		vector<int> y_coordinates;
-		vector<int> coor_offstroke;
+		double Temp;
+		double x_temp, y_temp;
+		vector<double> x_coordinates;
+		vector<double> y_coordinates;
+		vector<double> coor_offstroke;
 		bool isempty = false;
 		while (!fp.eof()) {
 			do {
@@ -55,7 +55,7 @@ vector<vector<int>> readfile(const char *filename, vector<vector<int>>&offstroke
 
 			for (int i = 0; i<temp.size(); i++)
 				if (temp[i] == '>') {
-					int Makenumber = 0;
+					double Makenumber = 0;
 					for (int j = i + 1; j<temp.size(); j++) {
 						string a;
 						a.push_back(temp[j]);
